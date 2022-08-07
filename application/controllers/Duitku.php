@@ -24,37 +24,98 @@ class Duitku extends CI_Controller {
 	}
 
 	function pay(){
-		$userId         =  3551; 
-		$secretKey      = 'de56f832487bc1ce1de5ff2cfacf8d9486c61da69df6fd61d5537b6b7d6d354d';
-		$amountTransfer =  50000; 
-		$bankAccount    = '8760673566';
-		$bankCode       = '014'; 
-		$email          = 'test@chakratechnology.com'; 
-		$purpose        = 'Test Disbursement with duitku';
-		$timestamp      = round(microtime(true) * 1000); 
-		$senderId       = 123456789; 
-		$senderName     = 'John Doe'; 
-		$paramSignature = $email . $timestamp . $bankCode . $bankAccount . $amountTransfer . $purpose . $secretKey; 
+		$merchantCode = 'D9174'; // dari duitku
+		$merchantKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
 
-		$signature = hash('sha256', $paramSignature);
+		$timestamp = round(microtime(true) * 1000); //in milisecond
+		$paymentAmount = 40000;
+		$merchantOrderId = time() . ''; // dari merchant, unique
+		$productDetails = 'Test Pay with duitku';
+		$email = 'azizmentor96@gmail.com'; // email pelanggan merchant
+		$phoneNumber = '08123456789'; // nomor tlp pelanggan merchant (opsional)
+		$additionalParam = ''; // opsional
+		$merchantUserInfo = ''; // opsional
+		$customerVaName = 'John Doe'; // menampilkan nama pelanggan pada tampilan konfirmasi bank
+		$callbackUrl = 'http://example.com/api-pop/backend/callback.php'; // url untuk callback
+		$returnUrl = 'http://example.com/api-pop/backend/redirect.php';//'http://example.com/return'; // url untuk redirect
+		$expiryPeriod = 10; // untuk menentukan waktu kedaluarsa dalam menit
+		$signature = hash('sha256', $merchantCode.$timestamp.$merchantKey);
+		//$paymentMethod = 'VC'; //digunakan untuk direksional pembayaran
+
+		// Detail pelanggan
+		$firstName = "John";
+		$lastName = "Doe";
+
+		// Alamat
+		$alamat = "Jl. Kembangan Raya";
+		$city = "Jakarta";
+		$postalCode = "11530";
+		$countryCode = "ID";
+
+		$address = array(
+			'firstName' => $firstName,
+			'lastName' => $lastName,
+			'address' => $alamat,
+			'city' => $city,
+			'postalCode' => $postalCode,
+			'phone' => $phoneNumber,
+			'countryCode' => $countryCode
+		);
+
+		$customerDetail = array(
+			'firstName' => $firstName,
+			'lastName' => $lastName,
+			'email' => $email,
+			'phoneNumber' => $phoneNumber,
+			'billingAddress' => $address,
+			'shippingAddress' => $address
+		);
+
+
+		$item1 = array(
+			'name' => 'Test Item 1',
+			'price' => 10000,
+			'quantity' => 1);
+
+		$item2 = array(
+			'name' => 'Test Item 2',
+			'price' => 30000,
+			'quantity' => 3);
+
+		$itemDetails = array(
+			$item1, $item2
+		);
 
 		$params = array(
-			'userId'         => $userId,
-			'amountTransfer' => $amountTransfer,
-			'bankAccount'    => $bankAccount,
-			'bankCode'       => $bankCode,
-			'email'          => $email,
-			'purpose'        => $purpose,
-			'timestamp'      => $timestamp,
-			'senderId'       => $senderId,
-			'senderName'     => $senderName,
-			'signature'      => $signature
+			'paymentAmount' => $paymentAmount,
+			'merchantOrderId' => $merchantOrderId,
+			'productDetails' => $productDetails,
+			'additionalParam' => $additionalParam,
+			'merchantUserInfo' => $merchantUserInfo,
+			'customerVaName' => $customerVaName,
+			'email' => $email,
+			'phoneNumber' => $phoneNumber,
+			'itemDetails' => $itemDetails,
+			'customerDetail' => $customerDetail,
+			'callbackUrl' => $callbackUrl,
+			'returnUrl' => $returnUrl,
+			'expiryPeriod' => $expiryPeriod,
+			//'paymentMethod' => $paymentMethod
 		);
 
 		$params_string = json_encode($params);
-		$url = 'https://sandbox.duitku.com/webapi/api/disbursement/inquirysandbox'; // Sandbox
-		// $url = 'https://passport.duitku.com/webapi/api/disbursement/inquiry'; // Production
+		//echo $params_string;
+		$url = 'https://api-sandbox.duitku.com/api/merchant/createinvoice'; // Sandbox
+		// $url = 'https://api-prod.duitku.com/api/merchant/createinvoice'; // Production
+
+		//log transaksi untuk debug 
+		// file_put_contents('log_createInvoice.txt', "* log *\r\n", FILE_APPEND | LOCK_EX);
+		// file_put_contents('log_createInvoice.txt', $params_string . "\r\n\r\n", FILE_APPEND | LOCK_EX);
+		// file_put_contents('log_createInvoice.txt', 'x-duitku-signature:' . $signature . "\r\n\r\n", FILE_APPEND | LOCK_EX);
+		// file_put_contents('log_createInvoice.txt', 'x-duitku-timestamp:' . $timestamp . "\r\n\r\n", FILE_APPEND | LOCK_EX);
+		// file_put_contents('log_createInvoice.txt', 'x-duitku-merchantcode:' . $merchantCode . "\r\n\r\n", FILE_APPEND | LOCK_EX);
 		$ch = curl_init();
+
 
 		curl_setopt($ch, CURLOPT_URL, $url); 
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
@@ -62,7 +123,11 @@ class Duitku extends CI_Controller {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
 			'Content-Type: application/json',                                                                                
-			'Content-Length: ' . strlen($params_string))                                                                       
+			'Content-Length: ' . strlen($params_string),
+			'x-duitku-signature:' . $signature ,
+			'x-duitku-timestamp:' . $timestamp ,
+			'x-duitku-merchantcode:' . $merchantCode    
+			)                                                                       
 		);   
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
@@ -73,20 +138,17 @@ class Duitku extends CI_Controller {
 		if($httpCode == 200)
 		{
 			$result = json_decode($request, true);
-			header('location: '. $result['paymentUrl']);
-			echo "email          :". $result['email']          . "<br />";
-			echo "bankCode       :". $result['bankCode']       . "<br />";
-			echo "bankAccount    :". $result['bankAccount']    . "<br />";
-			echo "amountTransfer :". $result['amountTransfer'] . "<br />";
-			echo "accountName    :". $result['accountName']    . "<br />";
-			echo "custRefNumber  :". $result['custRefNumber']  . "<br />";
-			echo "disburseId     :". $result['disburseId']     . "<br />";
-			echo "responseCode   :". $result['responseCode']   . "<br />";
-			echo "responseDesc   :". $result['responseDesc']   . "<br />";
+			//header('location: '. $result['paymentUrl']);
+			print_r($result, false);
+			// echo "paymentUrl :". $result['paymentUrl'] . "<br />";
+			// echo "reference :". $result['reference'] . "<br />";
+			// echo "statusCode :". $result['statusCode'] . "<br />";
+			// echo "statusMessage :". $result['statusMessage'] . "<br />";
 		}
-		else{
-			echo $httpCode;
-
+		else
+		{
+			// echo $httpCode . " " . $request ;
+			echo $request ;
 		}
 	}
 
@@ -166,8 +228,8 @@ class Duitku extends CI_Controller {
 
         $params_string = json_encode($params);
         //echo $params_string;
-        // $url = 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'; 
-		$url = 'https://sandbox.duitku.com/webapi/api/disbursement/inquirysandbox';
+        $url = 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'; 
+		// $url = 'https://sandbox.duitku.com/webapi/api/disbursement/inquirysandbox';
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url); 
