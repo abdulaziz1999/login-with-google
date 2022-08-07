@@ -36,8 +36,8 @@ class Duitku extends CI_Controller {
 		$additionalParam = ''; // opsional
 		$merchantUserInfo = ''; // opsional
 		$customerVaName = 'John Doe'; // menampilkan nama pelanggan pada tampilan konfirmasi bank
-		$callbackUrl = 'http://example.com/api-pop/backend/callback.php'; // url untuk callback
-		$returnUrl = 'http://example.com/api-pop/backend/redirect.php';//'http://example.com/return'; // url untuk redirect
+		$callbackUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/callback'; // url untuk callback
+		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
 		$expiryPeriod = 10; // untuk menentukan waktu kedaluarsa dalam menit
 		$signature = hash('sha256', $merchantCode.$timestamp.$merchantKey);
 		//$paymentMethod = 'VC'; //digunakan untuk direksional pembayaran
@@ -305,43 +305,48 @@ class Duitku extends CI_Controller {
 
 
 	function callback(){
-		$secretKey = 'de56f832487bc1ce1de5ff2cfacf8d9486c61da69df6fd61d5537b6b7d6d354d';
+		$apiKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // API key anda
+		$merchantCode = isset($_POST['merchantCode']) ? $_POST['merchantCode'] : null; 
+		$amount = isset($_POST['amount']) ? $_POST['amount'] : null; 
+		$merchantOrderId = isset($_POST['merchantOrderId']) ? $_POST['merchantOrderId'] : null; 
+		$productDetail = isset($_POST['productDetail']) ? $_POST['productDetail'] : null; 
+		$additionalParam = isset($_POST['additionalParam']) ? $_POST['additionalParam'] : null; 
+		$paymentCode = isset($_POST['paymentCode']) ? $_POST['paymentCode'] : null; 
+		$resultCode = isset($_POST['resultCode']) ? $_POST['resultCode'] : null; 
+		$merchantUserId = isset($_POST['merchantUserId']) ? $_POST['merchantUserId'] : null; 
+		$reference = isset($_POST['reference']) ? $_POST['reference'] : null; 
+		$signature = isset($_POST['signature']) ? $_POST['signature'] : null; 
 
-		$json = file_get_contents('php://input');
+		//log callback untuk debug 
+		// file_put_contents('callback.txt', "* Callback *\r\n", FILE_APPEND | LOCK_EX);
 
-		$result = json_decode(stripslashes($json),true);
-
-		$disburseId     = $result['disburseId']; 
-		$userId         = $result['userId']; 
-		$email          = $result['email']; 
-		$bankCode       = $result['bankCode'];
-		$bankAccount    = $result['bankAccount'];
-		$amountTransfer = $result['amountTransfer']; 
-		$accountName    = $result['accountName'];
-		$custRefNumber  = $result['custRefNumber'];   
-		$statusCode     = $result['statusCode']; 
-		$statusDesc     = $result['statusDesc'] ;
-		$errorMessage   = $result['errorMessage']; 
-		$signature      = $result['signature']; 
-
-		if(!empty($email) && !empty($bankCode) && !empty($bankAccount) && !empty($accountName) && !empty($custRefNumber) && !empty($amountTransfer) && !empty($disburseId) && !empty($signature))
+		if(!empty($merchantCode) && !empty($amount) && !empty($merchantOrderId) && !empty($signature))
 		{
-			$params = $email . $bankCode . $bankAccount . $accountName . $custRefNumber .  $amountTransfer . $disburseId . $secretKey;
-			$calcSignature = hash('sha256', $params);
+			$params = $merchantCode . $amount . $merchantOrderId . $apiKey;
+			$calcSignature = md5($params);
+
 			if($signature == $calcSignature)
 			{
-				//Your code here
-				echo "SUCCESS"; // Please response with success
+				//Callback tervalidasi
+				//Silahkan rubah status transaksi anda disini
+				// file_put_contents('callback.txt', "* Berhasil *\r\n\r\n", FILE_APPEND | LOCK_EX);
 
 			}
 			else
 			{
+				// file_put_contents('callback.txt', "* Bad Signature *\r\n\r\n", FILE_APPEND | LOCK_EX);
 				throw new Exception('Bad Signature');
 			}
-		}else
+		}
+		else
 		{
+			// file_put_contents('callback.txt', "* Bad Parameter *\r\n\r\n", FILE_APPEND | LOCK_EX);
 			throw new Exception('Bad Parameter');
 		}
 
+	}
+
+	function cekpembayaran(){
+		echo "cekpembayaran";
 	}
 }
