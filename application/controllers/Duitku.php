@@ -40,7 +40,7 @@ class Duitku extends CI_Controller {
 		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
 		$expiryPeriod = 10; // untuk menentukan waktu kedaluarsa dalam menit
 		$signature = hash('sha256', $merchantCode.$timestamp.$merchantKey);
-		//$paymentMethod = 'VC'; //digunakan untuk direksional pembayaran
+		$paymentMethod = '014'; //digunakan untuk direksional pembayaran
 
 		// Detail pelanggan
 		$firstName = "John";
@@ -100,7 +100,7 @@ class Duitku extends CI_Controller {
 			'callbackUrl' => $callbackUrl,
 			'returnUrl' => $returnUrl,
 			'expiryPeriod' => $expiryPeriod,
-			//'paymentMethod' => $paymentMethod
+			'paymentMethod' => $paymentMethod
 		);
 
 		$params_string = json_encode($params);
@@ -138,12 +138,12 @@ class Duitku extends CI_Controller {
 		if($httpCode == 200)
 		{
 			$result = json_decode($request, true);
-			//header('location: '. $result['paymentUrl']);
-			print_r($result, false);
-			// echo "paymentUrl :". $result['paymentUrl'] . "<br />";
-			// echo "reference :". $result['reference'] . "<br />";
-			// echo "statusCode :". $result['statusCode'] . "<br />";
-			// echo "statusMessage :". $result['statusMessage'] . "<br />";
+			header('location: '. $result['paymentUrl']);
+			// print_r($result, false);
+			echo "paymentUrl :". $result['paymentUrl'] . "<br />";
+			echo "reference :". $result['reference'] . "<br />";
+			echo "statusCode :". $result['statusCode'] . "<br />";
+			echo "statusMessage :". $result['statusMessage'] . "<br />";
 		}
 		else
 		{
