@@ -208,154 +208,141 @@ class Duitku extends CI_Controller {
 	}
 
 	function pay2(){
-		// $key = $this->key('psb');
-        $merchantCode = 'D9174'; // dari duitku
-        $merchantKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
-        $paymentAmount = '10000'; 
-        $paymentMethod = '014'; // VC = Credit Card
-        $merchantOrderId = time() . ''; // dari merchant, unik
-        $productDetails = "PSB Aziz " ;
-        $email = 'azizmentor96@gmail.com'; // email pelanggan anda
-        $phoneNumber = '089669001989'; // nomor telepon pelanggan anda (opsional)
-        $additionalParam = ''; // opsional
-        $merchantUserInfo = "PSB DQM - A"; // opsional
-        $customerVaName = "PSB DQM - Aziz"; // tampilan nama pada tampilan konfirmasi bank
-        $callbackUrl = ''; // url untuk callback
-        $returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2'; // url untuk redirect
-        $expiryPeriod = 5040; // atur waktu kadaluarsa dalam hitungan menit
-        $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $merchantKey);
+		$merchantCode = 'D9174'; // dari duitku
+		$apiKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
+		$paymentAmount = 40000;
+		$paymentMethod = 'VC'; // VC = Credit Card
+		$merchantOrderId = time() . ''; // dari merchant, unik
+		$productDetails = 'Tes pembayaran menggunakan Duitku';
+		$email = 'test@test.com'; // email pelanggan anda
+		$phoneNumber = '08123456789'; // nomor telepon pelanggan anda (opsional)
+		$additionalParam = ''; // opsional
+		$merchantUserInfo = ''; // opsional
+		$customerVaName = 'John Doe'; // tampilan nama pada tampilan konfirmasi bank
+		$callbackUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/callback'; // url untuk callback
+		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
+		$expiryPeriod = 10; // atur waktu kadaluarsa dalam hitungan menit
+		$signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
 
-        // Customer Detail
-        $firstName = 'AZIZ';
-        $lastName = " Axiz";
+		// Customer Detail
+		$firstName = "John";
+		$lastName = "Doe";
 
-        // Address
-        $alamat = " ";
-        $city = 'BOGOR';
-        $postalCode = " ";
-        $countryCode = " ";
+		// Address
+		$alamat = "Jl. Kembangan Raya";
+		$city = "Jakarta";
+		$postalCode = "11530";
+		$countryCode = "ID";
 
-        $address = array(
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'address' => $alamat,
-            'city' => $city,
-            'postalCode' => $postalCode,
-            'phone' => $phoneNumber,
-            'countryCode' => $countryCode
-        );
+		$address = array(
+			'firstName' => $firstName,
+			'lastName' => $lastName,
+			'address' => $alamat,
+			'city' => $city,
+			'postalCode' => $postalCode,
+			'phone' => $phoneNumber,
+			'countryCode' => $countryCode
+		);
 
-        $customerDetail = array(
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'email' => $email,
-            'phoneNumber' => $phoneNumber,
-            'billingAddress' => $address,
-            'shippingAddress' => $address
-        );
-
-
-        $item1 = array(
-            'name' => "PSB DQM a.n  Aziz",
-            'price' => $paymentAmount,
-            'quantity' => 1);
-
-        $itemDetails = array($item1);
-
-        $params = array(
-            'merchantCode' => $merchantCode,
-            'paymentAmount' => $paymentAmount,
-            'paymentMethod' => $paymentMethod,
-            'merchantOrderId' => $merchantOrderId,
-            'productDetails' => $productDetails,
-            'additionalParam' => $additionalParam,
-            'merchantUserInfo' => $merchantUserInfo,
-            'customerVaName' => $customerVaName,
-            'email' => $email,
-            'phoneNumber' => $phoneNumber,
-            'itemDetails' => $itemDetails,
-            'customerDetail' => $customerDetail,
-            'callbackUrl' => $callbackUrl,
-            'returnUrl' => $returnUrl,
-            'signature' => $signature,
-            'expiryPeriod' => $expiryPeriod
-        );
-
-        $params_string = json_encode($params);
-        //echo $params_string;
-        $url = 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'; 
-		// $url = 'https://sandbox.duitku.com/webapi/api/disbursement/inquirysandbox';
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($params_string))                                                                       
-        );   
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-        //execute post
-        $request = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if($httpCode == 200){
-            $result = json_decode($request, true);
-            
-            // $dataInsert = [
-            //     // 'idcsantri' => $idcsantri,
-            //     // 'idtahunajar' => $this->tahunajar()->id,
-            //     'merchantOrderId' => $merchantOrderId,
-            //     'paymentUrl' => $result['paymentUrl'],
-            //     'merchantCode' => $result['merchantCode'],
-            //     'reference' => $result['reference'],
-            //     'vaNumber' => $result['vaNumber'],
-            //     'amount' => $result['amount'],
-            //     'statusCode' => $result['statusCode'],
-            //     'statusMessage' => "WAITING",
-            //     'paymentMethod' => $paymentMethod
-            // ];
-            // $this->db->insert('duitku', $dataInsert);
-            // if($this->db->affected_rows() > 0){
-                // $this->db->where([
-                //     'idcsantri' => $idcsantri,
-                //     'idtahunajar' => $this->tahunajar()->id
-                // ])->update('mutasi_csantri', [
-                //     'tagihan' => $result['amount'],
-                //     'status_bayar' => 'Menunggu Pembayaran',
-                //     'metode' => 'duitku',
-                //     'randomword' => $result['paymentUrl']
-                // ]);
-
-                // $pesan	= "*PSB Darul Qur'an Mulia*\n\n";	
-                // $pesan .= "Atas Nama 		: PPDB DQM - ".$csantri->nama."\n";
-                // $pesan .= "Jumlah Bayar		: ".rupiah($result['amount'])."\n";
-                // $pesan .= "Url Pembayaran	: \n".$result['paymentUrl']."\n";
-                // $this->app_model->curlWa($csantri->nohandphone, $pesan);
-
-				echo "paymentUrl :". $result['paymentUrl'] . "<br />";
-				echo "merchantCode :". $result['merchantCode'] . "<br />";
-				echo "reference :". $result['reference'] . "<br />";
-				echo "vaNumber :". $result['vaNumber'] . "<br />";
-				echo "amount :". $result['amount'] . "<br />";
-				echo "statusCode :". $result['statusCode'] . "<br />";
-				echo "statusMessage :". $result['statusMessage'] . "<br />";
-                header('location: https://abdulaziz.nurulfikri.com/simperu_v2');
-            // }else{
-            //     $this->session->set_flashdata('error', "Silahkan Coba Lagi Untuk Pemilihan Metode Pembayaran");
-            //     redirect($_SERVER['HTTP_REFERER'],'refresh');
-            // }
+		$customerDetail = array(
+			'firstName' => $firstName,
+			'lastName' => $lastName,
+			'email' => $email,
+			'phoneNumber' => $phoneNumber,
+			'billingAddress' => $address,
+			'shippingAddress' => $address
+		);
 
 
-		
-            // $this->output->set_content_type('application/json')->set_output(json_encode($result));
-            
-        }else{
-            echo $httpCode;
-        }
+		$item1 = array(
+			'name' => 'Test Item 1',
+			'price' => 10000,
+			'quantity' => 1);
 
+		$item2 = array(
+			'name' => 'Test Item 2',
+			'price' => 30000,
+			'quantity' => 3);
+
+		$itemDetails = array(
+			$item1, $item2
+		);
+
+		/*Khusus untuk metode pembayaran OL dan SL
+		$accountLink = array (
+			'credentialCode' => '7cXXXXX-XXXX-XXXX-9XXX-944XXXXXXX8',
+			'ovo' => array (
+				'paymentDetails' => array ( 
+					0 => array (
+						'paymentType' => 'CASH',
+						'amount' => 40000,
+					),
+				),
+			),
+			'shopee' => array (
+				'useCoin' => false,
+				'promoId' => '',
+			),
+		);*/
+
+		$params = array(
+			'merchantCode' => $merchantCode,
+			'paymentAmount' => $paymentAmount,
+			'paymentMethod' => $paymentMethod,
+			'merchantOrderId' => $merchantOrderId,
+			'productDetails' => $productDetails,
+			'additionalParam' => $additionalParam,
+			'merchantUserInfo' => $merchantUserInfo,
+			'customerVaName' => $customerVaName,
+			'email' => $email,
+			'phoneNumber' => $phoneNumber,
+			// 'accountLink' => $accountLink,
+			'itemDetails' => $itemDetails,
+			'customerDetail' => $customerDetail,
+			'callbackUrl' => $callbackUrl,
+			'returnUrl' => $returnUrl,
+			'signature' => $signature,
+			'expiryPeriod' => $expiryPeriod
+		);
+
+		$params_string = json_encode($params);
+		//echo $params_string;
+		$url = 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'; // Sandbox
+		// $url = 'https://passport.duitku.com/webapi/api/merchant/v2/inquiry'; // Production
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url); 
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($params_string))                                                                       
+		);   
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+		//execute post
+		$request = curl_exec($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		if($httpCode == 200)
+		{
+			$result = json_decode($request, true);
+			//header('location: '. $result['paymentUrl']);
+			echo "paymentUrl :". $result['paymentUrl'] . "<br />";
+			echo "merchantCode :". $result['merchantCode'] . "<br />";
+			echo "reference :". $result['reference'] . "<br />";
+			echo "vaNumber :". $result['vaNumber'] . "<br />";
+			echo "amount :". $result['amount'] . "<br />";
+			echo "statusCode :". $result['statusCode'] . "<br />";
+			echo "statusMessage :". $result['statusMessage'] . "<br />";
+		}
+		else
+		{
+			$request = json_decode($request);
+			$error_message = "Server Error " . $httpCode ." ". $request->Message;
+			echo $error_message;
+		}
 	}
 
 
