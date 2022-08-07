@@ -223,7 +223,7 @@ class Duitku extends CI_Controller {
 		$customerVaName = 'John Doe'; // tampilan nama pada tampilan konfirmasi bank
 		$callbackUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/callback'; // url untuk callback
 		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
-		$expiryPeriod = 10; // atur waktu kadaluarsa dalam hitungan menit
+		$expiryPeriod = 5000; // atur waktu kadaluarsa dalam hitungan menit
 		$signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
 
 		// Customer Detail
@@ -388,6 +388,178 @@ class Duitku extends CI_Controller {
 			throw new Exception('Bad Parameter');
 		}
 
+	}
+
+	function grab(){
+		?>
+			<!DOCTYPE html>
+			<html>
+			<head>
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+			<title>Tekhnik Grabbing With Native PHP</title>
+			<style>
+			body{
+				padding:10px;
+			}
+			</style>
+			<link rel="stylesheet" href="https://sandbox.duitku.com/Styles/v2/bootstrap.min.css">
+			<link href="https://sandbox.duitku.com/Styles/v2/bootstrap.min.css" rel="stylesheet" />
+			<script src="https://sandbox.duitku.com/Scripts/jquery-3.4.1.min.js" type="d072d9a88405a0cd56043694-text/javascript"></script>
+			<script src="https://sandbox.duitku.com/Scripts/v2/bootstrap.min.js" type="d072d9a88405a0cd56043694-text/javascript"></script>
+			<link href="https://fonts.googleapis.com/css?family=Oxygen|PT+Sans|Quicksand" rel="stylesheet" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+			<link href="https://sandbox.duitku.com/Styles/v2/styleVA-20210517.css?v=25012022" rel="stylesheet" />
+			<script src="https://sandbox.duitku.com/Scripts/v2/duitkuVA.js?v=22062021" type="d072d9a88405a0cd56043694-text/javascript"></script>
+			</head>
+			<body>
+			<h1>Tekhnik Grabbing With Native PHP</h1>
+			<?php
+			$konten = file_get_contents("https://sandbox.duitku.com/TopUp/v2/TopUpVAPage.aspx?ref=BCHPGGWX3QY7H76C7");
+			// $pecah1 = explode("<table>",$konten);
+			// $pecah2 = explode("</table>",$pecah1[1]);
+			// echo $pecah2[0];
+			echo $konten;
+			?>
+			<script >
+
+$(document).ready(function () {
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+
+	today = dd + '-' + mm + '-' + yyyy;
+	document.getElementById("thisday").innerHTML = today;
+});
+
+function cc_format(value) {
+	var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+	var matches = v.match(/\d{4,16}/g);
+	var match = matches && matches[0] || ''
+	var parts = []
+	for (i = 0, len = match.length; i < len; i += 4) {
+		parts.push(match.substring(i, i + 4))
+	}
+	if (parts.length) {
+		return parts.join(' ')
+	} else {
+		return v
+	}
+}
+
+$(document).ready(function () {
+	var codeCheck = document.getElementById("TextBoxKodeBank").value;
+	var value = "";
+	if (codeCheck !== "490")
+	{
+		value = cc_format(document.getElementById("TextBoxVANumber").value);
+	} else
+	{
+		value = document.getElementById("TextBoxVANumber").value;
+	}
+	
+	document.getElementById("TextBoxVANumber").value = value;
+	document.getElementById("TextBoxVANumber").text = value;
+});
+
+//duitku.com new tab
+function newtab() {
+	window.open("https://www.duitku.com/en/");
+};
+
+function permatanet() {
+	window.open("https://new.permatanet.com");
+};
+
+function ibanksampoerna() {
+	window.open("https://ibank.banksampoerna.co.id/");
+};
+
+//copy text to clipboard
+function copy() {
+	/* Get the text field */
+	var copyText = document.getElementById("TextBoxVANumber");
+	var el = document.createElement('textarea');
+	el.value = copyText.value.replace(/\s/g, '');
+	el.setAttribute('readonly', '');
+	el.style.position = 'absolute';
+	el.style.left = '-9999px';
+	document.body.appendChild(el);
+
+	/* Select the text field */
+	el.select();
+	el.setSelectionRange(0, 99999); /*For mobile devices*/
+
+	/* Copy the text inside the text field */
+	document.execCommand("copy");
+	document.body.removeChild(el);
+
+	/* Alert the copied text */
+	// alert("Copied the text: " + copyText.value);
+
+
+	//snackbar notif
+	// Get the snackbar DIV
+	var x = document.getElementById("snackbar");
+
+	// Add the "show" class to DIV
+	x.className = "show";
+
+	// After 3 seconds, remove the show class from DIV
+	setTimeout(function () { x.className = x.className.replace("show", ""); }, 1000);
+}
+
+if (window.history.replaceState) {
+	window.history.replaceState(null, null, window.location.href);
+}
+
+// PREVENT Double clik
+var submit = 0;
+function CheckDouble() {
+	if (++submit > 1) {        
+		return false;
+	}
+}
+
+</script>
+<script >
+	function startTimer() {
+		var expiredDate = document.querySelector('#LabelexpiredDate').textContent;
+		var duration = expiredDate;
+		console.log(duration);
+		var timer = duration, hours, minutes, seconds;
+		var x = setInterval(function () {
+			var hours = parseInt(timer / 3600, 10);
+			var minutes = parseInt((timer / 60) % 60, 10);
+			var seconds = parseInt(timer % 60, 10);
+
+			hours = hours < 10 ? "0" + hours : hours;
+			minutes = minutes < 10 ? "0" + minutes : minutes;
+			seconds = seconds < 10 ? "0" + seconds : seconds;
+
+
+			document.querySelector('#timer').textContent = hours + ":" + minutes + ":" + seconds;
+			if (hours == 0) {
+				document.querySelector('#timer').textContent = minutes + ":" + seconds;
+			}
+
+			if (--timer < 0) {
+				var params = new URLSearchParams(window.location.search);
+				var ref = params.get('ref');
+				clearInterval(x);
+				window.location = "/TopUp/v2/ExpiredPage.aspx?reference=" + ref;
+
+			}
+		}, 1000);
+	}
+	startTimer();
+</script>
+<script src="https://sandbox.duitku.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="d072d9a88405a0cd56043694-|49" defer=""></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"73712a088a30496b","token":"835b6121832444e4a7aaca4aaf438a0d","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
+</body>
+			</body>
+			</html>
+		<?php
 	}
 
 	function cekpembayaran(){
