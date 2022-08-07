@@ -3,26 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Duitku extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/userguide3/general/urls.html
-	 */
 	public function index()
 	{
 		$this->load->view('welcome_message');
 	}
 
+	//get create invoice page from duitku
 	function pay(){
 		$merchantCode = 'D9174'; // dari duitku
 		$merchantKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
@@ -150,6 +136,7 @@ class Duitku extends CI_Controller {
 		}
 	}
 
+	//get payment gateway bank list
 	function get_payment(){
 		// Set kode merchant anda 
 		$merchantCode = "D9174"; 
@@ -207,6 +194,7 @@ class Duitku extends CI_Controller {
 		}
 	}
 
+	//get pay in bank specific
 	function pay2(){
 		$merchantCode = 'D9174'; // dari duitku
 		$apiKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
@@ -345,7 +333,7 @@ class Duitku extends CI_Controller {
 		}
 	}
 
-
+	//callback response from duitku
 	function callback(){
 		$apiKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // API key anda
 		$merchantCode = isset($_POST['merchantCode']) ? $_POST['merchantCode'] : null; 
