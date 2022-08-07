@@ -413,9 +413,8 @@ class Duitku extends CI_Controller {
 			<script src="https://sandbox.duitku.com/Scripts/v2/duitkuVA.js?v=22062021" type="d072d9a88405a0cd56043694-text/javascript"></script>
 			</head>
 			<body>
-			<h1>Tekhnik Grabbing With Native PHP</h1>
 			<?php
-			$konten = file_get_contents("https://sandbox.duitku.com/TopUp/v2/TopUpVAPage.aspx?ref=BCHPGGWX3QY7H76C7");
+			$konten = file_get_contents("https://sandbox.duitku.com/topup/topupdirectv2.aspx?ref=BCPBD7PU61YZOPPCT");
 			// $pecah1 = explode("<table>",$konten);
 			// $pecah2 = explode("</table>",$pecah1[1]);
 			// echo $pecah2[0];
@@ -423,143 +422,190 @@ class Duitku extends CI_Controller {
 			?>
 			<script >
 
-$(document).ready(function () {
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	var yyyy = today.getFullYear();
+				$(document).ready(function () {
+					var today = new Date();
+					var dd = String(today.getDate()).padStart(2, '0');
+					var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+					var yyyy = today.getFullYear();
 
-	today = dd + '-' + mm + '-' + yyyy;
-	document.getElementById("thisday").innerHTML = today;
-});
+					today = dd + '-' + mm + '-' + yyyy;
+					document.getElementById("thisday").innerHTML = today;
+				});
 
-function cc_format(value) {
-	var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
-	var matches = v.match(/\d{4,16}/g);
-	var match = matches && matches[0] || ''
-	var parts = []
-	for (i = 0, len = match.length; i < len; i += 4) {
-		parts.push(match.substring(i, i + 4))
-	}
-	if (parts.length) {
-		return parts.join(' ')
-	} else {
-		return v
-	}
-}
+				function cc_format(value) {
+					var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+					var matches = v.match(/\d{4,16}/g);
+					var match = matches && matches[0] || ''
+					var parts = []
+					for (i = 0, len = match.length; i < len; i += 4) {
+						parts.push(match.substring(i, i + 4))
+					}
+					if (parts.length) {
+						return parts.join(' ')
+					} else {
+						return v
+					}
+				}
 
-$(document).ready(function () {
-	var codeCheck = document.getElementById("TextBoxKodeBank").value;
-	var value = "";
-	if (codeCheck !== "490")
-	{
-		value = cc_format(document.getElementById("TextBoxVANumber").value);
-	} else
-	{
-		value = document.getElementById("TextBoxVANumber").value;
-	}
-	
-	document.getElementById("TextBoxVANumber").value = value;
-	document.getElementById("TextBoxVANumber").text = value;
-});
+				$(document).ready(function () {
+					var codeCheck = document.getElementById("TextBoxKodeBank").value;
+					var value = "";
+					if (codeCheck !== "490")
+					{
+						value = cc_format(document.getElementById("TextBoxVANumber").value);
+					} else
+					{
+						value = document.getElementById("TextBoxVANumber").value;
+					}
+					
+					document.getElementById("TextBoxVANumber").value = value;
+					document.getElementById("TextBoxVANumber").text = value;
+				});
 
-//duitku.com new tab
-function newtab() {
-	window.open("https://www.duitku.com/en/");
-};
+				//duitku.com new tab
+				function newtab() {
+					window.open("https://www.duitku.com/en/");
+				};
 
-function permatanet() {
-	window.open("https://new.permatanet.com");
-};
+				function permatanet() {
+					window.open("https://new.permatanet.com");
+				};
 
-function ibanksampoerna() {
-	window.open("https://ibank.banksampoerna.co.id/");
-};
+				function ibanksampoerna() {
+					window.open("https://ibank.banksampoerna.co.id/");
+				};
 
-//copy text to clipboard
-function copy() {
-	/* Get the text field */
-	var copyText = document.getElementById("TextBoxVANumber");
-	var el = document.createElement('textarea');
-	el.value = copyText.value.replace(/\s/g, '');
-	el.setAttribute('readonly', '');
-	el.style.position = 'absolute';
-	el.style.left = '-9999px';
-	document.body.appendChild(el);
+				//copy text to clipboard
+				function copy() {
+					/* Get the text field */
+					var copyText = document.getElementById("TextBoxVANumber");
+					var el = document.createElement('textarea');
+					el.value = copyText.value.replace(/\s/g, '');
+					el.setAttribute('readonly', '');
+					el.style.position = 'absolute';
+					el.style.left = '-9999px';
+					document.body.appendChild(el);
 
-	/* Select the text field */
-	el.select();
-	el.setSelectionRange(0, 99999); /*For mobile devices*/
+					/* Select the text field */
+					el.select();
+					el.setSelectionRange(0, 99999); /*For mobile devices*/
 
-	/* Copy the text inside the text field */
-	document.execCommand("copy");
-	document.body.removeChild(el);
+					/* Copy the text inside the text field */
+					document.execCommand("copy");
+					document.body.removeChild(el);
 
-	/* Alert the copied text */
-	// alert("Copied the text: " + copyText.value);
-
-
-	//snackbar notif
-	// Get the snackbar DIV
-	var x = document.getElementById("snackbar");
-
-	// Add the "show" class to DIV
-	x.className = "show";
-
-	// After 3 seconds, remove the show class from DIV
-	setTimeout(function () { x.className = x.className.replace("show", ""); }, 1000);
-}
-
-if (window.history.replaceState) {
-	window.history.replaceState(null, null, window.location.href);
-}
-
-// PREVENT Double clik
-var submit = 0;
-function CheckDouble() {
-	if (++submit > 1) {        
-		return false;
-	}
-}
-
-</script>
-<script >
-	function startTimer() {
-		var expiredDate = document.querySelector('#LabelexpiredDate').textContent;
-		var duration = expiredDate;
-		console.log(duration);
-		var timer = duration, hours, minutes, seconds;
-		var x = setInterval(function () {
-			var hours = parseInt(timer / 3600, 10);
-			var minutes = parseInt((timer / 60) % 60, 10);
-			var seconds = parseInt(timer % 60, 10);
-
-			hours = hours < 10 ? "0" + hours : hours;
-			minutes = minutes < 10 ? "0" + minutes : minutes;
-			seconds = seconds < 10 ? "0" + seconds : seconds;
+					/* Alert the copied text */
+					// alert("Copied the text: " + copyText.value);
 
 
-			document.querySelector('#timer').textContent = hours + ":" + minutes + ":" + seconds;
-			if (hours == 0) {
-				document.querySelector('#timer').textContent = minutes + ":" + seconds;
-			}
+					//snackbar notif
+					// Get the snackbar DIV
+					var x = document.getElementById("snackbar");
 
-			if (--timer < 0) {
-				var params = new URLSearchParams(window.location.search);
-				var ref = params.get('ref');
-				clearInterval(x);
-				window.location = "/TopUp/v2/ExpiredPage.aspx?reference=" + ref;
+					// Add the "show" class to DIV
+					x.className = "show";
 
-			}
-		}, 1000);
-	}
-	startTimer();
-</script>
-<script src="https://sandbox.duitku.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="d072d9a88405a0cd56043694-|49" defer=""></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"73712a088a30496b","token":"835b6121832444e4a7aaca4aaf438a0d","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
-</body>
+					// After 3 seconds, remove the show class from DIV
+					setTimeout(function () { x.className = x.className.replace("show", ""); }, 1000);
+				}
+
+				if (window.history.replaceState) {
+					window.history.replaceState(null, null, window.location.href);
+				}
+
+				// PREVENT Double clik
+				var submit = 0;
+				function CheckDouble() {
+					if (++submit > 1) {        
+						return false;
+					}
+				}
+
+			</script>
+			<script >
+				function startTimer() {
+					var expiredDate = document.querySelector('#LabelexpiredDate').textContent;
+					var duration = expiredDate;
+					console.log(duration);
+					var timer = duration, hours, minutes, seconds;
+					var x = setInterval(function () {
+						var hours = parseInt(timer / 3600, 10);
+						var minutes = parseInt((timer / 60) % 60, 10);
+						var seconds = parseInt(timer % 60, 10);
+
+						hours = hours < 10 ? "0" + hours : hours;
+						minutes = minutes < 10 ? "0" + minutes : minutes;
+						seconds = seconds < 10 ? "0" + seconds : seconds;
+
+
+						document.querySelector('#timer').textContent = hours + ":" + minutes + ":" + seconds;
+						if (hours == 0) {
+							document.querySelector('#timer').textContent = minutes + ":" + seconds;
+						}
+
+						if (--timer < 0) {
+							var params = new URLSearchParams(window.location.search);
+							var ref = params.get('ref');
+							clearInterval(x);
+							window.location = "/TopUp/v2/ExpiredPage.aspx?reference=" + ref;
+
+						}
+					}, 1000);
+				}
+				startTimer();
+			</script>
+			<script src="https://sandbox.duitku.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="d072d9a88405a0cd56043694-|49" defer=""></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"73712a088a30496b","token":"835b6121832444e4a7aaca4aaf438a0d","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
 			</body>
 			</html>
 		<?php
+	}
+
+	function grab_curl(){
+		// inisialisasi CURL
+		$options = array(
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_HEADER => false,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_USERAGENT => "spider",
+			CURLOPT_AUTOREFERER => true,
+			CURLOPT_CONNECTTIMEOUT => 120,
+			CURLOPT_TIMEOUT => 120,
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_SSL_VERIFYPEER => false
+			);
+			$ch = curl_init("https://sandbox.duitku.com/topup/topupdirectv2.aspx?ref=BCPBD7PU61YZOPPCT");
+			curl_setopt_array( $ch, $options );
+			$content = curl_exec( $ch );
+			$err = curl_errno( $ch );
+			$errmsg = curl_error( $ch );
+			$header = curl_getinfo( $ch );
+			curl_close( $ch );
+			echo $content;
+	}
+
+	function grab_curl_2(){
+		// inisialisasi CURL
+		$options = array(
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_HEADER => false,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_USERAGENT => "spider",
+			CURLOPT_AUTOREFERER => true,
+			CURLOPT_CONNECTTIMEOUT => 120,
+			CURLOPT_TIMEOUT => 120,
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_SSL_VERIFYPEER => false
+			);
+			$ch = curl_init("https://sandbox.duitku.com/TopUp/v2/DuitkuNotification.aspx?reference=BCPBD7PU61YZOPPCT");
+			curl_setopt_array( $ch, $options );
+			$content = curl_exec( $ch );
+			$err = curl_errno( $ch );
+			$errmsg = curl_error( $ch );
+			$header = curl_getinfo( $ch );
+			curl_close( $ch );
+			echo $content;
 	}
 
 	function cekpembayaran(){
