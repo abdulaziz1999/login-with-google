@@ -166,8 +166,8 @@ class Duitku extends CI_Controller {
 
         $params_string = json_encode($params);
         //echo $params_string;
-        // $url = 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'; 
-		$url = 'https://sandbox.duitku.com/webapi/api/disbursement/inquirysandbox';
+        $url = 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'; 
+		// $url = 'https://sandbox.duitku.com/webapi/api/disbursement/inquirysandbox';
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url); 
