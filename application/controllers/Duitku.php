@@ -332,8 +332,8 @@ class Duitku extends CI_Controller {
 			echo "paymentUrl :". $result['paymentUrl'] . "<br />";
 			echo "merchantCode :". $result['merchantCode'] . "<br />";
 			echo "reference :". $result['reference'] . "<br />";
-			echo "vaNumber :". $result['vaNumber'] . "<br />";
-			echo "amount :". $result['amount'] . "<br />";
+			// echo "vaNumber :". $result['vaNumber'] . "<br />";
+			// echo "amount :". $result['amount'] . "<br />";
 			echo "statusCode :". $result['statusCode'] . "<br />";
 			echo "statusMessage :". $result['statusMessage'] . "<br />";
 		}
