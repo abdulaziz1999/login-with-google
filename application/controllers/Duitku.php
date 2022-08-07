@@ -14,7 +14,7 @@ class Duitku extends CI_Controller {
 		$merchantKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
 
 		$timestamp = round(microtime(true) * 1000); //in milisecond
-		$paymentAmount = 40000;
+		$paymentAmount = 10000;
 		$merchantOrderId = time() . ''; // dari merchant, unique
 		$productDetails = 'Test Pay with duitku';
 		$email = 'azizmentor96@gmail.com'; // email pelanggan merchant
