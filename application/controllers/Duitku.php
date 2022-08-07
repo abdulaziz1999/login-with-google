@@ -191,10 +191,13 @@ class Duitku extends CI_Controller {
 		if($httpCode == 200)
 		{
 			$results = json_decode($request, true);
-			echo "<pre>"; print_r($results['paymentFee'], false); echo "</pre>";
-			// foreach($results[] as $result){
-			// 	echo $result;
-			// }
+			// echo "<pre>"; print_r($results['paymentFee'], false); echo "</pre>";
+			foreach($results['paymentFee'] as $result){
+				echo $result['paymentMethod'].'<br />';
+				echo $result['paymentName'].'<br />';
+				echo '<img src="'.$result['paymentImage'].'" alt=""><br />';
+				echo $result['totalFee'].'<br />';
+			}
 			// echo "paymentMethod :". $results['paymentMethod'] . "<br />";
 		}
 		else{
