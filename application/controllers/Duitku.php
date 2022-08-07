@@ -211,7 +211,7 @@ class Duitku extends CI_Controller {
 		$merchantCode = 'D9174'; // dari duitku
 		$apiKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // dari duitku
 		$paymentAmount = 40000;
-		$paymentMethod = 'VC'; // VC = Credit Card
+		$paymentMethod = '014'; // VC = Credit Card
 		$merchantOrderId = time() . ''; // dari merchant, unik
 		$productDetails = 'Tes pembayaran menggunakan Duitku';
 		$email = 'azizmentor96@gmail.com'; // email pelanggan anda
