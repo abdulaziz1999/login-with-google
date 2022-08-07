@@ -187,21 +187,21 @@ class Duitku extends CI_Controller {
         if($httpCode == 200){
             $result = json_decode($request, true);
             
-            $dataInsert = [
-                // 'idcsantri' => $idcsantri,
-                // 'idtahunajar' => $this->tahunajar()->id,
-                'merchantOrderId' => $merchantOrderId,
-                'paymentUrl' => $result['paymentUrl'],
-                'merchantCode' => $result['merchantCode'],
-                'reference' => $result['reference'],
-                'vaNumber' => $result['vaNumber'],
-                'amount' => $result['amount'],
-                'statusCode' => $result['statusCode'],
-                'statusMessage' => "WAITING",
-                'paymentMethod' => $paymentMethod
-            ];
+            // $dataInsert = [
+            //     // 'idcsantri' => $idcsantri,
+            //     // 'idtahunajar' => $this->tahunajar()->id,
+            //     'merchantOrderId' => $merchantOrderId,
+            //     'paymentUrl' => $result['paymentUrl'],
+            //     'merchantCode' => $result['merchantCode'],
+            //     'reference' => $result['reference'],
+            //     'vaNumber' => $result['vaNumber'],
+            //     'amount' => $result['amount'],
+            //     'statusCode' => $result['statusCode'],
+            //     'statusMessage' => "WAITING",
+            //     'paymentMethod' => $paymentMethod
+            // ];
             // $this->db->insert('duitku', $dataInsert);
-            if($this->db->affected_rows() > 0){
+            // if($this->db->affected_rows() > 0){
                 // $this->db->where([
                 //     'idcsantri' => $idcsantri,
                 //     'idtahunajar' => $this->tahunajar()->id
@@ -218,23 +218,23 @@ class Duitku extends CI_Controller {
                 // $pesan .= "Url Pembayaran	: \n".$result['paymentUrl']."\n";
                 // $this->app_model->curlWa($csantri->nohandphone, $pesan);
 
+				echo "paymentUrl :". $result['paymentUrl'] . "<br />";
+				echo "merchantCode :". $result['merchantCode'] . "<br />";
+				echo "reference :". $result['reference'] . "<br />";
+				echo "vaNumber :". $result['vaNumber'] . "<br />";
+				echo "amount :". $result['amount'] . "<br />";
+				echo "statusCode :". $result['statusCode'] . "<br />";
+				echo "statusMessage :". $result['statusMessage'] . "<br />";
                 header('location: https://abdulaziz.nurulfikri.com/simperu_v2');
-            }else{
-                $this->session->set_flashdata('error', "Silahkan Coba Lagi Untuk Pemilihan Metode Pembayaran");
-                redirect($_SERVER['HTTP_REFERER'],'refresh');
-            }
+            // }else{
+            //     $this->session->set_flashdata('error', "Silahkan Coba Lagi Untuk Pemilihan Metode Pembayaran");
+            //     redirect($_SERVER['HTTP_REFERER'],'refresh');
+            // }
 
 
-            
+		
             // $this->output->set_content_type('application/json')->set_output(json_encode($result));
             
-            // echo "paymentUrl :". $result['paymentUrl'] . "<br />";
-            // echo "merchantCode :". $result['merchantCode'] . "<br />";
-            // echo "reference :". $result['reference'] . "<br />";
-            // echo "vaNumber :". $result['vaNumber'] . "<br />";
-            // echo "amount :". $result['amount'] . "<br />";
-            // echo "statusCode :". $result['statusCode'] . "<br />";
-            // echo "statusMessage :". $result['statusMessage'] . "<br />";
         }else{
             echo $httpCode;
         }
