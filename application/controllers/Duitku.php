@@ -214,8 +214,8 @@ class Duitku extends CI_Controller {
 		$paymentMethod = 'VC'; // VC = Credit Card
 		$merchantOrderId = time() . ''; // dari merchant, unik
 		$productDetails = 'Tes pembayaran menggunakan Duitku';
-		$email = 'test@test.com'; // email pelanggan anda
-		$phoneNumber = '08123456789'; // nomor telepon pelanggan anda (opsional)
+		$email = 'azizmentor96@gmail.com'; // email pelanggan anda
+		$phoneNumber = '089669001989'; // nomor telepon pelanggan anda (opsional)
 		$additionalParam = ''; // opsional
 		$merchantUserInfo = ''; // opsional
 		$customerVaName = 'John Doe'; // tampilan nama pada tampilan konfirmasi bank
