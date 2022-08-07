@@ -179,13 +179,27 @@ class Duitku extends CI_Controller {
 		{
 			$results = json_decode($request, true);
 			// echo "<pre>"; print_r($results['paymentFee'], false); echo "</pre>";
-			foreach($results['paymentFee'] as $result){
-				echo $result['paymentMethod'].'<br />';
-				echo $result['paymentName'].'<br />';
-				echo '<img src="'.$result['paymentImage'].'" alt=""><br />';
-				echo $result['totalFee'].'<br />';
-			}
-			// echo "paymentMethod :". $results['paymentMethod'] . "<br />";
+			
+				?>
+				<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+				<div class="container">
+					<div class="row">
+						<?php foreach($results['paymentFee'] as $result){?>
+						<div class="col-md-3 mb-5">
+							<div class="card" style="width: 18rem;">
+								<img src="<?= $result['paymentImage']?>" class="card-img-top img-thumbnail" alt="...">
+								<div class="card-body text-center">
+									<h5 class="card-title"><?= $result['paymentName']?></h5>
+									<p class="card-text"><?= $result['paymentMethod']?></p>
+									<a href="#" class="btn btn-block btn-success">Bayar</a>
+								</div>
+							</div>
+						</div>
+						<?php }?>
+					</div>
+				</div>
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+				<?php
 		}
 		else{
 			$request = json_decode($request);
