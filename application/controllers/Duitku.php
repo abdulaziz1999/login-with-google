@@ -40,7 +40,7 @@ class Duitku extends CI_Controller {
 		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
 		$expiryPeriod = 10; // untuk menentukan waktu kedaluarsa dalam menit
 		$signature = hash('sha256', $merchantCode.$timestamp.$merchantKey);
-		$paymentMethod = '014'; //digunakan untuk direksional pembayaran
+		// $paymentMethod = '014'; //digunakan untuk direksional pembayaran
 
 		// Detail pelanggan
 		$firstName = "John";
@@ -72,19 +72,17 @@ class Duitku extends CI_Controller {
 		);
 
 
-		$item1 = array(
+		$item1 = [
 			'name' => 'Test Item 1',
 			'price' => 10000,
-			'quantity' => 1);
+			'quantity' => 1];
 
-		$item2 = array(
-			'name' => 'Test Item 2',
-			'price' => 30000,
-			'quantity' => 3);
+		// $item2 = array(
+		// 	'name' => 'Test Item 2',
+		// 	'price' => 30000,
+		// 	'quantity' => 3);
 
-		$itemDetails = array(
-			$item1, $item2
-		);
+		$itemDetails = [$item1];
 
 		$params = array(
 			'paymentAmount' => $paymentAmount,
@@ -100,7 +98,7 @@ class Duitku extends CI_Controller {
 			'callbackUrl' => $callbackUrl,
 			'returnUrl' => $returnUrl,
 			'expiryPeriod' => $expiryPeriod,
-			'paymentMethod' => $paymentMethod
+			// 'paymentMethod' => $paymentMethod
 		);
 
 		$params_string = json_encode($params);
