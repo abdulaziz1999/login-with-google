@@ -23,7 +23,7 @@ class Midtrans extends CI_Controller {
 			<script type="text/javascript">
 			var payButton = document.getElementById('pay-button');
 			payButton.addEventListener('click', function () {
-				snap.pay('59436905-98dc-43d4-ac10-f15822ad8e4b');
+				snap.pay('3d35df63-551e-451a-8450-7022745c862d');
 			});
 			</script>
 		</body>
