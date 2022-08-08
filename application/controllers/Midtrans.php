@@ -23,12 +23,26 @@ class Midtrans extends CI_Controller {
 			<script type="text/javascript">
 			var payButton = document.getElementById('pay-button');
 			payButton.addEventListener('click', function () {
-				snap.pay('402dbecf-58fe-4428-9efd-a991373d62f6');
+				snap.pay('7cab0cf4-77a1-4c8b-8447-cfb6fbef30e3');
 			});
 			</script>
 		</body>
 		</html>
 		<?php
+	}
+
+	function success(){
+		echo 'success';
+		echo $this->input->get('order_id');
+		echo $this->input->get('status_code');
+		echo $this->input->get('transaction_status');
+	}
+
+	function error(){
+		echo 'Error';
+		echo $this->input->get('order_id');
+		echo $this->input->get('status_code');
+		echo $this->input->get('transaction_status');
 	}
 
 	//callback response from duitku
