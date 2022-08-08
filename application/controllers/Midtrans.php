@@ -16,14 +16,14 @@ class Midtrans extends CI_Controller {
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<script type="text/javascript"
 					src="https://app.sandbox.midtrans.com/snap/snap.js"
-					data-client-key="<CLIENT-KEY>"></script>
+					data-client-key="SB-Mid-client-OETvDMBW_0chH017"></script>
 		</head>
 		<body>
 			<button id="pay-button">Pay!</button>
 			<script type="text/javascript">
 			var payButton = document.getElementById('pay-button');
 			payButton.addEventListener('click', function () {
-				snap.pay('<SNAP_TOKEN>');
+				snap.pay('402dbecf-58fe-4428-9efd-a991373d62f6');
 			});
 			</script>
 		</body>
