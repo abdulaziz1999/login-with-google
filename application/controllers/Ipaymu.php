@@ -99,11 +99,12 @@ class Ipaymu extends CI_Controller {
 	//callback response from duitku
 	function callback(){
 		//get all data $_GET variable
-		echo 'Response from ipaymu : '.$this->input->get('return').'<br>';
-		echo 'Trx Id : '.$this->input->get('trx_id').'<br>';
-		echo 'Status : '.$this->input->get('status').'<br>';
-		echo 'Pembayaran Via : ',$this->input->get('via').'<br>';
-		echo 'Name Channel : ',$this->input->get('channel').'<br>';
+		// echo 'Response from ipaymu : '.$this->input->get('return').'<br>';
+		// echo 'Trx Id : '.$this->input->get('trx_id').'<br>';
+		// echo 'Status : '.$this->input->get('status').'<br>';
+		// echo 'Pembayaran Via : ',$this->input->get('via').'<br>';
+		// echo 'Name Channel : ',$this->input->get('channel').'<br>';
+		echo '00';
 	}
 
 	function cekpembayaran(){
