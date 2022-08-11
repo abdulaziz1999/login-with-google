@@ -8,8 +8,49 @@ class Midtrans extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
+	function getTokenSnap(){
+		//curl post to midtrans server url = https://app.sandbox.midtrans.com/snap/v1/transactions 
+		//in field post 
+		// "transaction_details": {
+		// 	"order_id": "ORDER-101-1660039878",
+		// 	"gross_amount": 10000
+		//   }, 
+		//   "credit_card": {
+		// 	"secure": true
+		//   }
+		$url = 'https://app.sandbox.midtrans.com/snap/v1/transactions';
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Content-Type: application/json',
+			'Accept: application/json',
+			'Authorization: Basic '. base64_encode('SB-Mid-server-1lSFxCyowgxYOff57S0uSXoq')
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+			'transaction_details' => [
+				'order_id' => 'ORDER-101-'.time(),
+				'gross_amount' => 10000
+			],
+			'credit_card' => [
+				'secure' => true
+			]
+		]));
+		$result = curl_exec($ch);
+		curl_close($ch);
+		//echo set content type json
+		header('Content-Type: application/json');
+		$data = json_decode($result);
+		$data_array = [
+			'token' => $data->token,
+			'redirect_url' => $data->redirect_url
+		];
+		echo json_encode($data_array);
+	}
+
 	//get create invoice page from duitku
 	function pay(){
+		$token = $this->input->get('token');
 		?>
 		<html>
 		<head>
@@ -17,14 +58,84 @@ class Midtrans extends CI_Controller {
 			<script type="text/javascript"
 					src="https://app.sandbox.midtrans.com/snap/snap.js"
 					data-client-key="SB-Mid-client-OETvDMBW_0chH017"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		</head>
 		<body>
-			<button id="pay-button">Pay!</button>
+			<h4>Sepatu</h4>
+			<p>Harga : Rp 10000</p>
+			<input type="hidden" id="base_url" value="<?= base_url(); ?>">
+			<button id="pay-button">Pay! </button>
 			<script type="text/javascript">
+			var base_url = document.getElementById('base_url').value;
 			var payButton = document.getElementById('pay-button');
 			payButton.addEventListener('click', function () {
-				snap.pay('3d35df63-551e-451a-8450-7022745c862d');
+				//ajax getSnapToken url = http://localhost:8001/midtrans/getTokenSnap
+				$.ajax({
+					url: base_url +'midtrans/getTokenSnap',
+					type: 'GET',
+					success: function (data) {
+						console.log(data.token);
+						snap.pay(data.token, {
+						onSuccess: function(result){
+							console.log(result);
+							alert('success');
+						},
+						onPending: function(result){
+							console.log(result);
+							alert('pending');
+						},
+						onError: function(result){
+							console.log(result);
+							alert('error');
+						}
+					});
+					}
+				});
 			});
+			</script>
+		</body>
+		</html>
+		<?php
+	}
+
+	function pay2(){
+		$token = $this->input->get('token');
+		?>
+		<html>
+		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<script type="text/javascript"
+					src="https://app.sandbox.midtrans.com/snap/snap.js"
+					data-client-key="SB-Mid-client-OETvDMBW_0chH017"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		</head>
+		<body>
+			<h4>Sepatu</h4>
+			<p>Harga : Rp 10000</p>
+			<input type="hidden" id="base_url" value="<?= base_url(); ?>">
+			<button id="pay-button">Pay! </button>
+			<script type="text/javascript">
+			// var base_url = document.getElementById('base_url').value;
+			var payButton = document.getElementById('pay-button');
+			payButton.addEventListener('click', function() {
+				//ajax getSnapToken url = http://localhost:8001/midtrans/getTokenSnap
+			
+						snap.pay(data.token, {
+						onSuccess: function(result){
+							console.log(result);
+							alert('success');
+						},
+						onPending: function(result){
+							console.log(result);
+							alert('pending');
+						},
+						onError: function(result){
+							console.log(result);
+							alert('error');
+						}
+					});
+				}
+					
 			</script>
 		</body>
 		</html>
