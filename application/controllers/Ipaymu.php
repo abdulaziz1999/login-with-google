@@ -81,7 +81,6 @@ class Ipaymu extends CI_Controller {
 	}
 
 	function success(){
-		echo 'success';
 		echo 'Response from ipaymu : '.$this->input->get('return').'<br>';
 		echo 'Trx Id : '.$this->input->get('trx_id').'<br>';
 		echo 'Status : '.$this->input->get('status').'<br>';
