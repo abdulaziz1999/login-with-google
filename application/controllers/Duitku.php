@@ -99,8 +99,6 @@ class Duitku extends CI_Controller {
 		// file_put_contents('log_createInvoice.txt', 'x-duitku-timestamp:' . $timestamp . "\r\n\r\n", FILE_APPEND | LOCK_EX);
 		// file_put_contents('log_createInvoice.txt', 'x-duitku-merchantcode:' . $merchantCode . "\r\n\r\n", FILE_APPEND | LOCK_EX);
 		$ch = curl_init();
-
-
 		curl_setopt($ch, CURLOPT_URL, $url); 
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
@@ -122,7 +120,7 @@ class Duitku extends CI_Controller {
 		if($httpCode == 200)
 		{
 			$result = json_decode($request, true);
-			header('location: '. $result['paymentUrl']);
+			// header('location: '. $result['paymentUrl']);
 			// print_r($result, false);
 			echo "paymentUrl :". $result['paymentUrl'] . "<br />";
 			echo "reference :". $result['reference'] . "<br />";
@@ -347,6 +345,58 @@ class Duitku extends CI_Controller {
 		}
 	}
 
+	function pay3(){
+		?>
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Pay Duitku PopUp</title>
+			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+			<script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
+		</head>
+		<body>
+			<button id="pay-button">Pay</button>
+
+			<script>
+				var payButton = document.getElementById('pay-button');
+				payButton.addEventListener('click', function() {
+					checkout.process("D91747X204H3TQ7O0DOA", {
+					defaultLanguage: "id", //opsional pengaturan bahasa
+					successEvent: function(result){
+					// tambahkan fungsi sesuai kebutuhan anda
+						console.log('success');
+						console.log(result);
+						alert('Payment Success');
+					},
+					pendingEvent: function(result){
+					// tambahkan fungsi sesuai kebutuhan anda
+						console.log('pending');
+						console.log(result);
+						alert('Payment Pending');
+					},
+					errorEvent: function(result){
+					// tambahkan fungsi sesuai kebutuhan anda
+						console.log('error');
+						console.log(result);
+						alert('Payment Error');
+					},
+					closeEvent: function(result){
+					// tambahkan fungsi sesuai kebutuhan anda
+						console.log('customer closed the popup without finishing the payment');
+						console.log(result);
+						alert('customer closed the popup without finishing the payment');
+					}
+				}); 
+				});
+			</script>
+		</body>
+		</html>
+		<?php
+	}
+
 	//callback response from duitku
 	function callback(){
 		$apiKey = '11fca2d38ac9a876a5ad337006aa8aa3'; // API key anda
@@ -374,7 +424,7 @@ class Duitku extends CI_Controller {
 				//Callback tervalidasi
 				//Silahkan rubah status transaksi anda disini
 				// file_put_contents('callback.txt', "* Berhasil *\r\n\r\n", FILE_APPEND | LOCK_EX);
-
+				echo "SUCCESS";
 			}
 			else
 			{
