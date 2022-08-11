@@ -429,13 +429,13 @@ class Duitku extends CI_Controller {
 			else
 			{
 				// file_put_contents('callback.txt', "* Bad Signature *\r\n\r\n", FILE_APPEND | LOCK_EX);
-				throw new Exception('Bad Signature');
+				echo 'Bad Signature';
 			}
 		}
 		else
 		{
 			// file_put_contents('callback.txt', "* Bad Parameter *\r\n\r\n", FILE_APPEND | LOCK_EX);
-			throw new Exception('Bad Parameter');
+			echo 'Bad Parameter';
 		}
 
 	}
