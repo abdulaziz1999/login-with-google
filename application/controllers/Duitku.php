@@ -220,7 +220,7 @@ class Duitku extends CI_Controller {
 		$merchantUserInfo = ''; // opsional
 		$customerVaName = 'John Doe'; // tampilan nama pada tampilan konfirmasi bank
 		$callbackUrl = 'https://payment.kampuskode.com/duitku/callback'; // url untuk callback
-		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
+		$returnUrl = 'https://payment.kampuskode.com/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
 		$expiryPeriod = 5000; // atur waktu kadaluarsa dalam hitungan menit
 		$signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
 
