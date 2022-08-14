@@ -484,41 +484,41 @@ class Duitku extends CI_Controller {
 
         if($httpCode == 200){
             $result = json_decode($request, true);
-
-            $data = [
-                "reference"     => $result['reference'] ,
-                "amount"        => $result['amount'] ,
-                "fee"           => $result['fee'] ,
-                "statusCode"    => $result['statusCode'] ,
-                "statusMessage" => $result['statusMessage']
-            ];
-            $this->db->where('merchantOrderId', $result['merchantOrderId'])->update('duitku', $data);
-            $get = $this->db->get_where('duitku', ['merchantOrderId' => $result['merchantOrderId']])->row();
-            
-            $tagihan = $result['amount'] + $result['fee'];
-            // $dataUpdate = [
-            //     'status_bayar'      => 'LUNAS',
-            //     'tagihan'           => rupiah($tagihan),
-            //     'noujian'           => $noujian,
-            //     'adm_pendaftaran'   => $adm,
-            //     'datepay'           => date('Y-m-d H:i:s')
+			echo "<pre>";print_r($result); echo "</pre>";
+            // $data = [
+            //     "reference"     => $result['reference'] ,
+            //     "amount"        => $result['amount'] ,
+            //     "fee"           => $result['fee'] ,
+            //     "statusCode"    => $result['statusCode'] ,
+            //     "statusMessage" => $result['statusMessage']
             // ];
-            // $this->db->where('id', $idmutasi)->update('mutasi_csantri', $dataUpdate);
-			$data = [
-				'merchantCode' => $result['merchantCode'],
-				'amount' => $result['amount'],
-				// 'merchantOrderId' => $result['merchantOrderId'],
-				'productDetail' => $result['productDetail'],
-				'additionalParam' => $result['additionalParam'],
-				'paymentMethod' => $result['paymentMethod'],
-				'resultCode' => $result['resultCode'],
-				'merchantUserId' => $result['merchantUserId'],
-				'reference' => $result['reference'],
-				'signature' => $result['signature'],
-				"statusMessage" => 'Success',
-				// 'data' => json_encode($data)
-			];
-			$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
+            // $this->db->where('merchantOrderId', $result['merchantOrderId'])->update('duitku', $data);
+            // $get = $this->db->get_where('duitku', ['merchantOrderId' => $result['merchantOrderId']])->row();
+            
+            // $tagihan = $result['amount'] + $result['fee'];
+            // // $dataUpdate = [
+            // //     'status_bayar'      => 'LUNAS',
+            // //     'tagihan'           => rupiah($tagihan),
+            // //     'noujian'           => $noujian,
+            // //     'adm_pendaftaran'   => $adm,
+            // //     'datepay'           => date('Y-m-d H:i:s')
+            // // ];
+            // // $this->db->where('id', $idmutasi)->update('mutasi_csantri', $dataUpdate);
+			// $data = [
+			// 	'merchantCode' => $result['merchantCode'],
+			// 	'amount' => $result['amount'],
+			// 	// 'merchantOrderId' => $result['merchantOrderId'],
+			// 	// 'productDetail' => $result['productDetail'],
+			// 	'additionalParam' => $result['additionalParam'],
+			// 	'paymentMethod' => $result['paymentMethod'],
+			// 	'resultCode' => $result['resultCode'],
+			// 	// 'merchantUserId' => $result['merchantUserId'],
+			// 	'reference' => $result['reference'],
+			// 	// 'signature' => $result['signature'],
+			// 	"statusMessage" => 'Success',
+			// 	// 'data' => json_encode($data)
+			// ];
+			// $this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
             
         }else
             echo $httpCode;
