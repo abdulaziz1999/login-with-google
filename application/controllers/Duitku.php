@@ -336,7 +336,7 @@ class Duitku extends CI_Controller {
 			// echo "statusCode :". $result['statusCode'] . "<br />";
 			// echo "statusMessage :". $result['statusMessage'] . "<br />";
 			$data = [
-				'id_user' => $result['id_user'],
+				'id_user' => '1',
 				'app_name' => 'SIMPERU',
 				'merchantOrderId' => $result['merchantOrderId'],
 				'paymentUrl' => $result['paymentUrl'],
