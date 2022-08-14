@@ -437,7 +437,6 @@ class Duitku extends CI_Controller {
 			{
 				//Callback tervalidasi
 				//Silahkan rubah status transaksi anda disini
-				echo "SUCCESS";
 				$data = [
 					'merchantCode' => $merchantCode,
 					'amount' => $amount,
@@ -453,6 +452,7 @@ class Duitku extends CI_Controller {
 					'data' => json_encode($data)
 				];
 				$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
+				echo "SUCCESS";
 			}
 			else
 			{
