@@ -484,16 +484,16 @@ class Duitku extends CI_Controller {
 
         if($httpCode == 200){
             $result = json_decode($request, true);
-			echo "<pre>";print_r($result); echo "</pre>";
-            // $data = [
-            //     "reference"     => $result['reference'] ,
-            //     "amount"        => $result['amount'] ,
-            //     "fee"           => $result['fee'] ,
-            //     "statusCode"    => $result['statusCode'] ,
-            //     "statusMessage" => $result['statusMessage']
-            // ];
-            // $this->db->where('merchantOrderId', $result['merchantOrderId'])->update('duitku', $data);
-            // $get = $this->db->get_where('duitku', ['merchantOrderId' => $result['merchantOrderId']])->row();
+			// echo "<pre>";print_r($result); echo "</pre>";
+            $data = [
+                "reference"     => $result['reference'] ,
+                "amount"        => $result['amount'] ,
+                "fee"           => $result['fee'] ,
+                "statusCode"    => $result['statusCode'] ,
+                "statusMessage" => $result['statusMessage']
+            ];
+            $this->db->where('merchantOrderId', $result['merchantOrderId'])->update('duitku', $data);
+            $get = $this->db->get_where('duitku', ['merchantOrderId' => $result['merchantOrderId']])->row();
             
             // $tagihan = $result['amount'] + $result['fee'];
             // // $dataUpdate = [
