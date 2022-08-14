@@ -22,7 +22,7 @@ class Duitku extends CI_Controller {
 		$additionalParam = ''; // opsional
 		$merchantUserInfo = ''; // opsional
 		$customerVaName = 'John Doe'; // menampilkan nama pelanggan pada tampilan konfirmasi bank
-		$callbackUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/callback'; // url untuk callback
+		$callbackUrl = 'https://payment.kampuskode.com/duitku/callback'; // url untuk callback
 		$returnUrl = 'https://abdulaziz.nurulfikri.com/simperu_v2/duitku/cekpembayaran';//'http://example.com/return'; // url untuk redirect
 		$expiryPeriod = 10; // untuk menentukan waktu kedaluarsa dalam menit
 		$signature = hash('sha256', $merchantCode.$timestamp.$merchantKey);
@@ -449,7 +449,7 @@ class Duitku extends CI_Controller {
 					'merchantUserId' => $merchantUserId,
 					'reference' => $reference,
 					'signature' => $signature,
-					"statusMessage" => $statusMessage,
+					"statusMessage" => 'Success',
 					'data' => json_encode($data)
 				];
 				$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
