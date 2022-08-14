@@ -437,7 +437,7 @@ class Duitku extends CI_Controller {
 			{
 				//Callback tervalidasi
 				//Silahkan rubah status transaksi anda disini
-				
+				$this->check($merchantOrderId);
 				echo "SUCCESS";
 			}
 			else
@@ -449,7 +449,7 @@ class Duitku extends CI_Controller {
 		{
 			echo 'Bad Parameter';
 		}
-		$this->check($merchantOrderId);
+		
 	}
 
 	function check($merchantOrderId){
