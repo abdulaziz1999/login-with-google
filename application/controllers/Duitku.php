@@ -437,21 +437,7 @@ class Duitku extends CI_Controller {
 			{
 				//Callback tervalidasi
 				//Silahkan rubah status transaksi anda disini
-				$data = [
-					'merchantCode' => $merchantCode,
-					'amount' => $amount,
-					// 'merchantOrderId' => $merchantOrderId,
-					'productDetail' => $productDetail,
-					'additionalParam' => $additionalParam,
-					'paymentMethod' => $paymentMethod,
-					'resultCode' => $resultCode,
-					'merchantUserId' => $merchantUserId,
-					'reference' => $reference,
-					'signature' => $signature,
-					"statusMessage" => 'Success',
-					// 'data' => json_encode($data)
-				];
-				$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
+				
 				echo "SUCCESS";
 			}
 			else
@@ -463,6 +449,22 @@ class Duitku extends CI_Controller {
 		{
 			echo 'Bad Parameter';
 		}
+
+		$data = [
+			'merchantCode' => $merchantCode,
+			'amount' => $amount,
+			// 'merchantOrderId' => $merchantOrderId,
+			'productDetail' => $productDetail,
+			'additionalParam' => $additionalParam,
+			'paymentMethod' => $paymentMethod,
+			'resultCode' => $resultCode,
+			'merchantUserId' => $merchantUserId,
+			'reference' => $reference,
+			'signature' => $signature,
+			"statusMessage" => 'Success',
+			// 'data' => json_encode($data)
+		];
+		$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
 
 	}
 
