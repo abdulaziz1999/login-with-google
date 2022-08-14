@@ -328,14 +328,27 @@ class Duitku extends CI_Controller {
 		if($httpCode == 200)
 		{
 			$result = json_decode($request, true);
-			//header('location: '. $result['paymentUrl']);
-			echo "paymentUrl :". $result['paymentUrl'] . "<br />";
-			echo "merchantCode :". $result['merchantCode'] . "<br />";
-			echo "reference :". $result['reference'] . "<br />";
+			header('location: '. $result['paymentUrl']);
+			// echo "paymentUrl :". $result['paymentUrl'] . "<br />";
+			// echo "merchantCode :". $result['merchantCode'] . "<br />";
+			// echo "reference :". $result['reference'] . "<br />";
 			// echo "vaNumber :". $result['vaNumber'] . "<br />";
 			// echo "amount :". $result['amount'] . "<br />";
-			echo "statusCode :". $result['statusCode'] . "<br />";
-			echo "statusMessage :". $result['statusMessage'] . "<br />";
+			// echo "statusCode :". $result['statusCode'] . "<br />";
+			// echo "statusMessage :". $result['statusMessage'] . "<br />";
+			$data = [
+				'id_user' => $result['id_user'],
+				'app_name' => 'SIMPERU',
+				'merchantOrderId' => $result['merchantOrderId'],
+				'paymentUrl' => $result['paymentUrl'],
+				'merchantCode' => $result['merchantCode'],
+				'reference' => $result['reference'],
+				'vaNumber' => $result['vaNumber'],
+				'amount' => $result['amount'],
+				'statusCode' => $result['statusCode'],
+				'statusMessage' => 'WAITING',
+				'paymentMethod' => $paymentMethod,
+			];
 		}
 		else
 		{
@@ -363,7 +376,7 @@ class Duitku extends CI_Controller {
 			<script>
 				var payButton = document.getElementById('pay-button');
 				payButton.addEventListener('click', function() {
-					checkout.process("D91747X204H3TQ7O0DOA", {
+					checkout.process("D9174WEJCDDCOS7EYW43", {
 					defaultLanguage: "id", //opsional pengaturan bahasa
 					successEvent: function(result){
 					// tambahkan fungsi sesuai kebutuhan anda
@@ -423,18 +436,30 @@ class Duitku extends CI_Controller {
 			{
 				//Callback tervalidasi
 				//Silahkan rubah status transaksi anda disini
-				// file_put_contents('callback.txt', "* Berhasil *\r\n\r\n", FILE_APPEND | LOCK_EX);
 				echo "SUCCESS";
+				$data = [
+					'merchantCode' => $merchantCode,
+					'amount' => $amount,
+					// 'merchantOrderId' => $merchantOrderId,
+					'productDetail' => $productDetail,
+					'additionalParam' => $additionalParam,
+					'paymentMethod' => $paymentMethod,
+					'resultCode' => $resultCode,
+					'merchantUserId' => $merchantUserId,
+					'reference' => $reference,
+					'signature' => $signature,
+					"statusMessage" => $statusMessage,
+					'data' => json_encode($data)
+				];
+				$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
 			}
 			else
 			{
-				// file_put_contents('callback.txt', "* Bad Signature *\r\n\r\n", FILE_APPEND | LOCK_EX);
 				echo 'Bad Signature';
 			}
 		}
 		else
 		{
-			// file_put_contents('callback.txt', "* Bad Parameter *\r\n\r\n", FILE_APPEND | LOCK_EX);
 			echo 'Bad Parameter';
 		}
 
