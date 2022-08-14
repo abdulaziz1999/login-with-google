@@ -338,7 +338,7 @@ class Duitku extends CI_Controller {
 			$data = [
 				'id_user' => '1',
 				'app_name' => 'SIMPERU',
-				'merchantOrderId' => $result['merchantOrderId'],
+				'merchantOrderId' => $merchantOrderId,
 				'paymentUrl' => $result['paymentUrl'],
 				'merchantCode' => $result['merchantCode'],
 				'reference' => $result['reference'],
