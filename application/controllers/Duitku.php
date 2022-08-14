@@ -328,7 +328,6 @@ class Duitku extends CI_Controller {
 		if($httpCode == 200)
 		{
 			$result = json_decode($request, true);
-			header('location: '. $result['paymentUrl']);
 			// echo "paymentUrl :". $result['paymentUrl'] . "<br />";
 			// echo "merchantCode :". $result['merchantCode'] . "<br />";
 			// echo "reference :". $result['reference'] . "<br />";
@@ -349,6 +348,8 @@ class Duitku extends CI_Controller {
 				'statusMessage' => 'WAITING',
 				'paymentMethod' => $paymentMethod,
 			];
+			$this->db->insert('duitku', $data);
+			header('location: '. $result['paymentUrl']);
 		}
 		else
 		{
