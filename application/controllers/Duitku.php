@@ -449,24 +449,80 @@ class Duitku extends CI_Controller {
 		{
 			echo 'Bad Parameter';
 		}
-
-		$data = [
-			'merchantCode' => $merchantCode,
-			'amount' => $amount,
-			// 'merchantOrderId' => $merchantOrderId,
-			'productDetail' => $productDetail,
-			'additionalParam' => $additionalParam,
-			'paymentMethod' => $paymentMethod,
-			'resultCode' => $resultCode,
-			'merchantUserId' => $merchantUserId,
-			'reference' => $reference,
-			'signature' => $signature,
-			"statusMessage" => 'Success',
-			// 'data' => json_encode($data)
-		];
-		$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
-
+		$this->check($merchantOrderId);
 	}
+
+	function check($merchantOrderId){
+        $merchantCode = 'D9174';
+        $merchantKey = '11fca2d38ac9a876a5ad337006aa8aa3'; 
+
+        $signature = md5($merchantCode . $merchantOrderId . $merchantKey);
+
+        $params = array(
+            'merchantCode' => $merchantCode,
+            'merchantOrderId' => $merchantOrderId,
+            'signature' => $signature
+        );
+
+        $params_string = json_encode($params);
+        $url = 'https://sandbox.duitku.com/webapi/api/merchant/transactionStatus';
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',                                                                                
+            'Content-Length: ' . strlen($params_string))                                                                       
+        );   
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        //execute post
+        $request = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if($httpCode == 200){
+            $result = json_decode($request, true);
+
+            $data = [
+                "reference"     => $result['reference'] ,
+                "amount"        => $result['amount'] ,
+                "fee"           => $result['fee'] ,
+                "statusCode"    => $result['statusCode'] ,
+                "statusMessage" => $result['statusMessage']
+            ];
+            $this->db->where('merchantOrderId', $result['merchantOrderId'])->update('duitku', $data);
+            $get = $this->db->get_where('duitku', ['merchantOrderId' => $result['merchantOrderId']])->row();
+            
+            $tagihan = $result['amount'] + $result['fee'];
+            // $dataUpdate = [
+            //     'status_bayar'      => 'LUNAS',
+            //     'tagihan'           => rupiah($tagihan),
+            //     'noujian'           => $noujian,
+            //     'adm_pendaftaran'   => $adm,
+            //     'datepay'           => date('Y-m-d H:i:s')
+            // ];
+            // $this->db->where('id', $idmutasi)->update('mutasi_csantri', $dataUpdate);
+			$data = [
+				'merchantCode' => $result['merchantCode'],
+				'amount' => $result['amount'],
+				// 'merchantOrderId' => $result['merchantOrderId'],
+				'productDetail' => $result['productDetail'],
+				'additionalParam' => $result['additionalParam'],
+				'paymentMethod' => $result['paymentMethod'],
+				'resultCode' => $result['resultCode'],
+				'merchantUserId' => $result['merchantUserId'],
+				'reference' => $result['reference'],
+				'signature' => $result['signature'],
+				"statusMessage" => 'Success',
+				// 'data' => json_encode($data)
+			];
+			$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
+            
+        }else
+            echo $httpCode;
+    }
 
 	function cekpembayaran(){
 		echo "cekpembayaran";
