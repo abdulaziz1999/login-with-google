@@ -449,7 +449,7 @@ class Duitku extends CI_Controller {
 					'reference' => $reference,
 					'signature' => $signature,
 					"statusMessage" => 'Success',
-					'data' => json_encode($data)
+					// 'data' => json_encode($data)
 				];
 				$this->db->update('duitku', $data,['merchantOrderId' => $merchantOrderId]);
 				echo "SUCCESS";
