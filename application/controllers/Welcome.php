@@ -62,7 +62,8 @@ class Welcome extends CI_Controller {
 		if($result){
 			$this->output->set_output(json_encode([
 				'success' => true,
-				'data' => $data
+				'data' => $data,
+				'message' => 'Data inserted successfully'
 			]));
 		}else{
 			$this->output->set_output(json_encode([
@@ -83,7 +84,8 @@ class Welcome extends CI_Controller {
 		if($result){
 			$this->output->set_output(json_encode([
 				'success' => true,
-				'data' => $data
+				'data' => $data,
+				'message' => 'Data updated successfully'
 			]));
 		}else{
 			$this->output->set_output(json_encode([
@@ -99,7 +101,8 @@ class Welcome extends CI_Controller {
 		$result = $this->db->delete('note_app');
 		if($result){
 			$this->output->set_output(json_encode([
-				'success' => true
+				'success' => true,
+				'message' => 'Data deleted successfully'
 			]));
 		}else{
 			$this->output->set_output(json_encode([
@@ -116,7 +119,8 @@ class Welcome extends CI_Controller {
 		if($result){
 			$this->output->set_output(json_encode([
 				'success' => true,
-				'data' => $result
+				'data' => $result,
+				'message' => 'Data retrieved successfully'
 			]));
 		}else{
 			$this->output->set_output(json_encode([
