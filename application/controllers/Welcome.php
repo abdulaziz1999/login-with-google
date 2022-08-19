@@ -41,4 +41,89 @@ class Welcome extends CI_Controller {
 
 	}
 
+	function list(){
+		$data = $this->db->get('note_app')->result();
+
+		$this->output->set_content_type('application/json');
+		$this->output->set_output(json_encode($data));
+	}
+
+	function add(){
+		//insert data field title, content, and date
+		$this->output->set_content_type('application/json');
+		$data = [
+			'title' 	=> $this->input->post('title'),
+			'content' 	=> $this->input->post('content'),
+			'date' 		=> date('Y-m-d H:i:s')
+		];
+		$result = $this->db->insert('note_app', $data);
+
+		// if insert affected row is 1, then return the data
+		if($result){
+			$this->output->set_output(json_encode([
+				'success' => true,
+				'data' => $data
+			]));
+		}else{
+			$this->output->set_output(json_encode([
+				'success' => false,
+				'message' => 'Data not inserted'
+			]));
+		}
+	}
+
+	function update(){
+		$id = $this->input->post('id');
+		$data = [
+			'title' 	=> $this->input->post('title'),
+			'content' 	=> $this->input->post('content'),
+		];
+		$this->db->where('id', $id);
+		$result = $this->db->update('note_app', $data);
+		if($result){
+			$this->output->set_output(json_encode([
+				'success' => true,
+				'data' => $data
+			]));
+		}else{
+			$this->output->set_output(json_encode([
+				'success' => false,
+				'message' => 'failed to update data'
+			]));
+		}
+	}
+
+	function delete(){
+		$id = $this->input->post('id');
+		$this->db->where('id', $id);
+		$result = $this->db->delete('note_app');
+		if($result){
+			$this->output->set_output(json_encode([
+				'success' => true
+			]));
+		}else{
+			$this->output->set_output(json_encode([
+				'success' => false,
+				'message' => 'failed to delete data'
+			]));
+		}
+	}
+
+	function get_data(){
+		$id = $this->input->get('id');
+		$this->db->where('id', $id);
+		$result = $this->db->get('note_app')->row();
+		if($result){
+			$this->output->set_output(json_encode([
+				'success' => true,
+				'data' => $result
+			]));
+		}else{
+			$this->output->set_output(json_encode([
+				'success' => false,
+				'message' => 'failed to get data'
+			]));
+		}
+	}
+
 }
